@@ -39,7 +39,7 @@ class LoteCreateForm(forms.ModelForm):  # Ofertar lote de produtos
             self.instance.taxa_comissao = 5 * float(valor_base) / 100.00  # taxa de 5%
         diferenca = timedelta(hours=-3)
         fuso = timezone(diferenca)
-        tempo_atual = datetime.now().replace(tzinfo=utc)
+        tempo_atual = datetime.now().replace(tzinfo=utc) + diferenca
         self.instance.data_inicio = tempo_atual
         # PRIMEIRA VALIDACAO: Vendedor tem saldo para pagar taxa de comissao
         saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.cleaned_data['cliente_vendedor'])
@@ -72,7 +72,7 @@ class LoteLiberarForm(forms.ModelForm):  # Leiloeiro libera lote para lances
         # SEGUNDA VALIDACAO: Leilao precisa acabar no futuro
         diferenca = timedelta(hours=-3)
         fuso = timezone(diferenca)
-        tempo_atual = datetime.now().replace(tzinfo=utc)
+        tempo_atual = datetime.now().replace(tzinfo=utc) + diferenca
         self.instance.data_inicio = tempo_atual
         tempo_final = self.cleaned_data['data_final']
         if tempo_final < tempo_atual:
@@ -90,7 +90,7 @@ class LoteLiberarForm(forms.ModelForm):  # Leiloeiro libera lote para lances
         # ok, vamos adicionar pagamento ao leilao
         diferenca = timedelta(hours=-3)
         fuso = timezone(diferenca)
-        tempo_atual = datetime.now().replace(tzinfo=utc)
+        tempo_atual = datetime.now().replace(tzinfo=utc) + diferenca
         pagamento = models.Pagamento(lote=self.instance, data=tempo_atual, valor=self.instance.taxa_comissao,
                                      tipo_de_pagamento='COMISSÃO NOVO LOTE')
         pagamento.save()
@@ -108,7 +108,7 @@ class LoteFinalizarLeilaoForm(forms.ModelForm):  # Hora de realizar cobranças
         # PRIMEIRA VALIDACAO: Data final precisa estar no passado
         diferenca = timedelta(hours=-3)
         fuso = timezone(diferenca)
-        tempo_atual = datetime.now().replace(tzinfo=utc) 
+        tempo_atual = datetime.now().replace(tzinfo=utc) + diferenca 
         tempo_final = self.instance.data_final
         if (tempo_final > tempo_atual):
             raise forms.ValidationError("O leilão ainda vai acabar:" + tempo_final.strftime("%m/%d/%Y, %H:%M:%S"))
@@ -211,7 +211,7 @@ class LoteUpdateForm(forms.ModelForm):  # Realizar Lance
         # QUARTA VALIDACAO: Se o leilao ja expirou, nao dah pra fazer lance
         diferenca = timedelta(hours=-3)
         fuso = timezone(diferenca)
-        tempo_atual = datetime.now().replace(tzinfo=utc)
+        tempo_atual = datetime.now().replace(tzinfo=utc) + diferenca
         tempo_final = self.instance.data_final
         if (tempo_final < tempo_atual):
             raise forms.ValidationError(
