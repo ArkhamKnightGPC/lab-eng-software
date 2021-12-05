@@ -4,31 +4,13 @@ O projeto da disciplina é um sistema para leilões online. O deploy foi feito u
 
 Os diagramas e relatórios produzidos ao longo do curso se encontram na pasta **Documentação**.
 
-## Como rodar localmente ?
-
-Para executar o projeto, primeiro é necessário instalar **requirements.txt**
-
-> pipenv install -r requirements.txt
-
-Então para ativar o ambiente virtual
-
-> pipenv shell
-
-Realizar as migrações para deixar seu banco igual o nosso
-
-> python manage.py migrate
-
-Agora basta executar o servidor
-
-> python manage.py runserver
-
 ## Pasta Screenshots
 
 Para esclarecer o fluxo de usuário no projeto e criar uma memória visual do projeto, adicionamos uma pasta **Screenshots** contendo capturas de tela da versão atual do projeto em funcionamento.
 
 ![Homepage](Screenshots/homepage.png)
 
-## O que tem na versão atual do projeto ?
+## O que foi implementado no projeto ?
 
 ### Funcionalidades
 
