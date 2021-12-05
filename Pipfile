@@ -16,6 +16,7 @@ Django = "==3.2.8"
 PyMySQL = "==1.0.2"
 dj-database-url = "*"
 psycopg2 = "*"
+django-heroku = "*"
 
 [dev-packages]
 
